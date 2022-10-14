@@ -1,0 +1,8 @@
+.vscode
+
+# vscode sqltools
+*.session.sql
+sqltools*
+
+# air
+tmp
