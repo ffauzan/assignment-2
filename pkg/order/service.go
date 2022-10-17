@@ -24,29 +24,21 @@ type Repository interface {
 	OrderExist(orderId uint) (bool, error)
 }
 
-type Service interface {
-	CreateOrder(order Order) (uint, error)
-	UpdateOrder(order Order) error
-	GetOrder(orderId uint) (*Order, error)
-	GetOrders() ([]Order, error)
-	DeleteOrder(orderId uint) error
-}
-
-type orderService struct {
+type OrderService struct {
 	repo Repository
 }
 
-func NewService(repo Repository) Service {
-	return &orderService{
+func NewService(repo Repository) *OrderService {
+	return &OrderService{
 		repo: repo,
 	}
 }
 
-func (s *orderService) CreateOrder(order Order) (uint, error) {
+func (s *OrderService) CreateOrder(order Order) (uint, error) {
 	return s.repo.CreateOrder(order)
 }
 
-func (s *orderService) GetOrder(orderId uint) (*Order, error) {
+func (s *OrderService) GetOrder(orderId uint) (*Order, error) {
 	isExist, err := s.repo.OrderExist(orderId)
 	if err != nil {
 		return nil, err
@@ -58,7 +50,7 @@ func (s *orderService) GetOrder(orderId uint) (*Order, error) {
 	return s.repo.GetOrder(orderId)
 }
 
-func (s *orderService) UpdateOrder(order Order) error {
+func (s *OrderService) UpdateOrder(order Order) error {
 	isExist, err := s.repo.OrderExist(order.OrderID)
 	if err != nil {
 		return err
@@ -70,11 +62,11 @@ func (s *orderService) UpdateOrder(order Order) error {
 	return s.repo.UpdateOrder(order)
 }
 
-func (s *orderService) GetOrders() ([]Order, error) {
+func (s *OrderService) GetOrders() ([]Order, error) {
 	return s.repo.GetOrders()
 }
 
-func (s *orderService) DeleteOrder(orderId uint) error {
+func (s *OrderService) DeleteOrder(orderId uint) error {
 	isExist, err := s.repo.OrderExist(orderId)
 	if err != nil {
 		return err
