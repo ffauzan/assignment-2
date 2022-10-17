@@ -1,16 +1,28 @@
 package rest
 
 import (
-	"net/http"
+	"fga-asg-2/pkg/order"
 
 	"github.com/gin-gonic/gin"
 )
 
-func NewRouter() *gin.Engine {
-	r := gin.Default()
+type BaseResponse struct {
+	Status  string      `json:"status"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
+}
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, "pong")
-	})
+func NewRouter(orderService order.Service) *gin.Engine {
+	r := gin.Default()
+	RegisterOrderHandler(r, orderService)
 	return r
+}
+
+// Function to send error response
+func SendErrorResponse(c *gin.Context, err error, code int) {
+	c.JSON(code, BaseResponse{
+		Status:  "error",
+		Message: err.Error(),
+		Data:    nil,
+	})
 }
