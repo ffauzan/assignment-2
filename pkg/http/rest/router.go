@@ -1,8 +1,6 @@
 package rest
 
 import (
-	"fga-asg-2/pkg/order"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,7 +10,7 @@ type BaseResponse struct {
 	Data    interface{} `json:"data"`
 }
 
-func NewRouter(orderService order.Service) *gin.Engine {
+func NewRouter(orderService OrderService) *gin.Engine {
 	r := gin.Default()
 	RegisterOrderHandler(r, orderService)
 	return r

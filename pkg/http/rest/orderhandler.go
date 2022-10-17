@@ -21,11 +21,19 @@ type UpdateOrderRequest struct {
 	Items        []order.Item
 }
 
-type orderHandler struct {
-	service order.Service
+type OrderService interface {
+	CreateOrder(order.Order) (uint, error)
+	GetOrder(uint) (*order.Order, error)
+	UpdateOrder(order.Order) error
+	GetOrders() ([]order.Order, error)
+	DeleteOrder(uint) error
 }
 
-func RegisterOrderHandler(r *gin.Engine, service order.Service) {
+type orderHandler struct {
+	service OrderService
+}
+
+func RegisterOrderHandler(r *gin.Engine, service OrderService) {
 	handler := &orderHandler{
 		service: service,
 	}
